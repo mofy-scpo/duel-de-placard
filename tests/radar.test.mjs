@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {radarValues,scoreBreakdown} from '../dist/logic.mjs';
+import {radarPoint,radarSeries,radarSVG} from '../dist/radar.mjs';
+const best={nutriscore_grade:'a',nova_group:1,additives_n:0,nutriments:{sugars_100g:0,'saturated-fat_100g':0}};
+assert.deepEqual(radarValues(best),[100,100,100,100,100]);
+const missing={nutriscore_grade:'a'};
+assert.deepEqual(radarValues(missing),[100,null,null,null,null]);
+assert.equal(scoreBreakdown(missing).value,100);
+assert.equal(scoreBreakdown(missing).available,40);
+assert.equal(radarSeries(radarValues(missing)).polygon,null);
+assert.equal(radarSeries(radarValues(missing)).points.filter(Boolean).length,1);
+assert.equal(radarSeries(radarValues(missing)).segments.length,0);
+const zero={nutriscore_grade:'e',nova_group:4,additives_n:9,nutriments:{sugars_100g:40,'saturated-fat_100g':15}};
+assert.deepEqual(radarValues(zero),[0,0,0,0,0]);
+assert.deepEqual(radarPoint(0,0),[280,200]);
+assert.deepEqual(radarPoint(0,100),[280,77]);
+assert.equal(radarPoint(2,null),null);
+assert.ok(radarSeries(radarValues(zero)).polygon);
+assert.equal(radarSeries([100,null,40,70,null]).segments.length,1);
+const snapshots=JSON.parse(readFileSync(new URL('../dist/products.json',import.meta.url)));
+for(const p of Object.values(snapshots.products)){
+ const s=scoreBreakdown(p),axes=radarValues(p);
+ assert.equal(s.earned,s.rows.reduce((a,b)=>a+(b.points??0),0));
+ assert.equal(s.value,Math.round(s.earned/s.available*100));
+ axes.forEach(v=>assert.ok(v===null||v>=0&&v<=100));
+}
+const html=radarSVG([{name:'<script>unsafe</script>',values:radarValues(best),visible:true},{name:'hidden',values:radarValues(zero),visible:false}]);
+assert.ok(!html.includes('<script>'));assert.ok(html.includes('&lt;script&gt;'));
+assert.ok(!html.includes('radar-area radar-product-1'));
+assert.ok(!html.includes('NaN'));assert.ok(!html.includes('undefined'));
+assert.ok(html.includes('aria-labelledby="radar-title radar-description"'));
+console.log('Radar scaling, zero versus missing data, partial traces and score decomposition passed.');

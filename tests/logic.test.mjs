@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {number,parts,score,comparison} from '../dist/logic.mjs';
+assert.equal(score({}).value,null);
+assert.equal(number(undefined),null);assert.equal(number(null),null);assert.equal(number(''),null);assert.equal(number('bad'),null);assert.equal(number(0),0);
+assert.deepEqual(score({nutriscore_grade:'a'}),{value:100,available:40,count:1});
+assert.equal(score({nutriscore_grade:'e'}).value,0);
+assert.equal(score({nutriscore_grade:'a',nova_group:1,additives_n:0,nutriments:{sugars_100g:0,'saturated-fat_100g':0}}).value,100);
+assert.deepEqual(parts({nutriscore_grade:'unknown',nova_group:5}),[null,null,null,null,null]);
+for(const [sugar,points] of [[0,10],[4.99,10],[5,6],[15,6],[15.01,3],[30,3],[30.01,0]])assert.equal(parts({nutriments:{sugars_100g:sugar}})[3],points);
+for(const [fat,points] of [[0,10],[1.49,10],[1.5,6],[5,6],[5.01,3],[10,3],[10.01,0]])assert.equal(parts({nutriments:{'saturated-fat_100g':fat}})[4],points);
+for(const [n,points] of [[0,15],[1,10],[2,10],[3,5],[5,5],[6,0]])assert.equal(parts({additives_n:n})[2],points);
+assert.equal(score({nutriscore_grade:'b',additives_n:0}).value,82);
+assert.equal(comparison(undefined,0),null);assert.equal(comparison(0,1),0);assert.equal(comparison(2,1,true),0);assert.equal(comparison(2,2),null);
+console.log('Scoring, missing values, threshold boundaries and comparison checks passed.');

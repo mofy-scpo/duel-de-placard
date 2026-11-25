@@ -1,0 +1,7 @@
+Duel de Placard — export GitHub Pages
+Version applicative : 3
+Date de l’export : 25 novembre 2026
+Commit source : af08c5cd987a8fc8c4c4a849d7250bc6e8644a69
+Les dossiers dist/ et tests/ sont des copies fidèles de cette version.
+Ajouts à l’export : workflow GitHub Pages, documentation de migration et attributions.
+Aucune configuration ou donnée d’authentification ChatGPT Sites n’est nécessaire.

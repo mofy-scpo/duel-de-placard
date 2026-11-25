@@ -30,4 +30,4 @@ La feuille CSS charge DM Sans et Manrope par Google Fonts. Les fichiers de polic
 
 ## Code de l’application
 
-Aucune licence de diffusion du code n’a été choisie pour le compte de l’utilisateur. Choisir la licence du dépôt selon ses intentions, en conservant les obligations propres aux données et images tierces.
+Le code de l’application est publié sous licence MIT (voir `LICENSE`). Cette licence ne couvre pas les données ni les images tierces, qui gardent leurs propres obligations.

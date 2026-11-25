@@ -1,5 +1,7 @@
 # Duel de Placard
 
+**🔗 Site en ligne : [https://mofy-scpo.github.io/duel-de-placard/](https://mofy-scpo.github.io/duel-de-placard/)**
+
 Code complet de la version 3 développée et publiée sur ChatGPT Sites, prêt à être repris dans un dépôt GitHub et déployé sur GitHub Pages.
 
 **Commencer par `INSTRUCTIONS_CLAUDE.md`** pour le passage de relais à votre agent.
